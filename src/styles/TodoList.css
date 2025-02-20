@@ -1,0 +1,32 @@
+.todo-container {
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .todo-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .todo-item span {
+    flex-grow: 1;
+  }
+
+  .todo-item {
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.todo-item:hover {
+    transform: scale(1.05);
+}
+  

@@ -1,3 +1,10 @@
-// Typer för Todo-appen kommer att läggas till här
+export interface TodoItem {
+    id: number;
+    title: string;
+    completed: boolean;
+}
 
-export {};
+export interface TodoState {
+    items: TodoItem[];
+    filter: 'all' | 'active' | 'completed';
+}
