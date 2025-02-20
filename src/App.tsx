@@ -1,25 +1,46 @@
-import React from 'react';
-import logo from './assets/logo.svg';
-import './App.css';
+import React, { useState } from 'react'; // useState för att hantera tema
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Routing för dynamik
+import Home from './components/Home'; // Importerar Home-komponenten
+import About from './components/About'; // mporterar About-komponenten
+import logo from './assets/logo.svg'; // 
+import './styles/App.css'; // 
 
 function App() {
+  // State för mörkt/ljust tema
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Funktion för att byta tema
+  const toggleTheme = (): void => {
+    setIsDarkMode(prev => !prev);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // Omsluter hela appen i <Router> för routing
+    <Router>
+      <div className={`App ${isDarkMode ? 'dark' : 'light'}`}>
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <p>Edit <code>src/App.tsx</code> and save to reload.</p>
+
+          {/* Navigation med länkar till Home och About */}
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
+          </nav>
+
+          {/* Knapp för att byta tema */}
+          <button onClick={toggleTheme}>
+            {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+          </button>
+        </header>
+
+        {/* Routes för att växla mellan sidor */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
