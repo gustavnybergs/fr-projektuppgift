@@ -4,10 +4,10 @@ import '../styles/TodoList.css';
 
 
 const TodoList: React.FC = () => {
-    // State för todos och input
+    // Huvudstate för todos och input
     const [todos, setTodos] = useState<TodoState>({
         items: [],
-        filter: 'all'
+        filter: 'all' // Förberedd för framtida filtreringar
     });
     const [inputValue, setInputValue] = useState<string>('');
 
@@ -34,66 +34,78 @@ const TodoList: React.FC = () => {
         setInputValue(''); // Rensa input efter tillägg
     };
 
-    // Hantera Enter-tangent
+    // Event handler som lyssnar efter Enter-tangent i input-fältet
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
         if (e.key === 'Enter') {
             addTodo();
         }
     };
 
-    // Toggle todo status
+    // Funktion som växlar completed-status för en todo
     const toggleTodo = (id: number): void => {
         setTodos(prev => ({
             ...prev,
+            // Mappar genom alla items och inverterar completed för matchande id
             items: prev.items.map(item => 
                 item.id === id ? { ...item, completed: !item.completed } : item
             )
         }));
     };
 
-    // Ta bort todo
+    // Ta bort todo baserat på id
     const deleteTodo = (id: number): void => {
         setTodos(prev => ({
             ...prev,
+            // Filtrerar bort item med matchande id
             items: prev.items.filter(item => item.id !== id)
         }));
     };
 
+    // Render-delen av komponenten
     return (
-        <div className="todo-container">
+        <section className="todo-container">
             <h2>Todo List</h2>
-            <div className="todo-input">
+            {/* Input-sektion med textfält och lägg till-knapp */}
+            <form className="todo-input" onSubmit={(e) => {
+                e.preventDefault();
+                addTodo();
+            }}>
                 <input
                     type="text"
                     value={inputValue}
                     onChange={handleInputChange}
-                    onKeyDown={handleKeyPress} // 🆕 Använd "onKeyDown" istället för "onKeyPress"
+                    onKeyDown={handleKeyPress}
                     placeholder="Skriv en ny uppgift..."
                 />
-                <button onClick={addTodo}>Lägg till</button>
-            </div>
+                <button type="submit">Lägg till</button>
+            </form>
             
-            <div className="todo-list">
+            {/* Lista av todos med conditional rendering:
+                - Visar meddelande om listan är tom
+                - Annars mappar och visar alla todos */}
+
+            <ul className="todo-list">
                 {todos.items.length === 0 ? (
                     <p>Inga uppgifter än. Lägg till en!</p>
                 ) : (
                     todos.items.map(todo => (
-                        <div key={todo.id} className="todo-item">
+                        <li key={todo.id} className="todo-item">
                             <input
                                 type="checkbox"
                                 checked={todo.completed}
                                 onChange={() => toggleTodo(todo.id)}
                             />
+                            {/* Styling för genomstruken text om todo är completed */}
                             <span 
                                 style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
                                 {todo.title}
                             </span>
                             <button onClick={() => deleteTodo(todo.id)}>Ta bort</button>
-                        </div>
+                        </li>
                     ))
                 )}
-            </div>
-        </div>
+            </ul>
+        </section>
     );
 };
 

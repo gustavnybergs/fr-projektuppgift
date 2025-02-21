@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './components/Home'; // Importerar Home-komponenten
 import About from './components/About'; // mporterar About-komponenten
 import TodoList from './components/TodoList';
-import logo from './assets/logo.svg'; // 
-import './styles/App.css'; // 
+import logo from './assets/logo.svg';  
+import './styles/App.css';  
 
 function App() {
   // State för mörkt/ljust tema
@@ -18,33 +18,38 @@ function App() {
   return (
     // Omsluter hela appen i <Router> för routing
     <Router>
-      <div className={`App ${isDarkMode ? 'dark' : 'light'}`}>
+      <main className={`App ${isDarkMode ? 'dark' : 'light'}`}>
 
         {/* Navigation med länkar till Home och About */}
         <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-            <Link to="/todos">Todo List</Link> 
-
-          </nav>
+            <ul>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/about">About</Link></li>
+              <li><Link to="/todos">Todo List</Link></li> 
+            </ul>
+        </nav>
 
         <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" /> 
-          {/* <p>Edit <code>src/App.tsx</code> and save to reload.</p> */}
-
+            <img src={logo} className="App-logo" alt="React logotyp som snurrar"  /> 
+          
           {/* Knapp för att byta tema */}
-          <button onClick={toggleTheme}>
+          <button 
+            onClick={toggleTheme}
+            aria-label={`Byt till ${isDarkMode ? 'ljust' : 'mörkt'} tema`}
+          >
             {isDarkMode ? 'Light Mode' : 'Dark Mode'}
           </button>
         </header>
 
         {/* Routes för att växla mellan sidor */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/todos" element={<TodoList />} /> 
-        </Routes>
-      </div>
+        <article>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/todos" element={<TodoList />} /> 
+          </Routes>
+        </article>
+      </main>
     </Router>
   );
 }
